@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Erpnext de bord</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #000;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            margin-top: 0;
+            font-size: 22px;
+            border-bottom: 1px solid #7f8c8d;
+            padding-bottom: 10px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .menu-item {
+            margin-bottom: 10px;
+        }
+
+        .has-submenu {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            color: #ecf0f1;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .has-submenu:hover {
+            background-color: #010305;
+        }
+
+        .has-submenu .arrow {
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .has-submenu.active .arrow {
+            transform: rotate(180deg);
+        }
+
+        .submenu {
+            display: none;
+            list-style-type: none;
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+
+        .submenu li {
+            margin: 5px 0;
+        }
+
+        .submenu li a {
+            font-size: 12px;
+            color: #bdc3c7;
+            text-decoration: none;
+            display: block;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .sidebar ul li a {
+            color: #ecf0f1;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            padding: 1px 23px;
+            border-radius: -10px;
+            transition: background-color 0.3s;
+        }
+
+        .submenu li a:hover {
+            background-color: #1a1a1a;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            color: #444;
+        }
+
+        section {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <!-- Menu Fournisseur -->
+            <li class="menu-item">
+                <div class="has-submenu" onclick="toggleSubmenu(this, 'fournisseurSubmenu')">
+                    Fournisseur
+                    <span class="arrow">▼</span>
+                </div>
+                <ul class="submenu" id="fournisseurSubmenu">
+                    <li><a href="#">Liste des demandes de devis</a></li>
+                    <li><a href="#">Liste des commandes</a></li>
+                </ul>
+            </li>
+
+            <!-- Menu Comptable -->
+            <li class="menu-item">
+                <div class="has-submenu" onclick="toggleSubmenu(this, 'comptableSubmenu')">
+                    Comptable
+                    <span class="arrow">▼</span>
+                </div>
+                <ul class="submenu" id="comptableSubmenu">
+                    <li><a href="#">Voir les factures</a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <h1 th:text="'Bienvenue ' + ${username}">Bienvenue</h1>
+        </header>
+        <section>
+            <p>Veuillez sélectionner une option dans le menu à gauche pour continuer.</p>
+        </section>
+    </main>
+
+    <script>
+        function toggleSubmenu(element, submenuId) {
+            const submenu = document.getElementById(submenuId);
+            const isVisible = submenu.style.display === 'block';
+
+            // Masquer tous les sous-menus
+            document.querySelectorAll('.submenu').forEach(sub => sub.style.display = 'none');
+            document.querySelectorAll('.has-submenu').forEach(menu => menu.classList.remove('active'));
+
+            if (!isVisible) {
+                submenu.style.display = 'block';
+                element.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

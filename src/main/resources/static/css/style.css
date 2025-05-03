@@ -1,0 +1,65 @@
+/* Corps de la page */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff; /* Fond principalement blanc */
+    color: #000000; /* Texte noir */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    transition: background-color 0.3s, color 0.3s;
+    position: relative;
+}
+
+/* Conteneur de la page de connexion */
+.login-container {
+    background-color: #ffffff; /* Fond blanc */
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    width: 320px;
+}
+
+/* Titre */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #111; /* Texte plus foncé pour le titre */
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-top: 10px;
+    color: #111;
+}
+
+/* Champs de texte */
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #000;
+}
+
+/* Bouton de soumission */
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #000; /* Bouton noir */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Effet au survol du bouton */
+button[type="submit"]:hover {
+    background-color: #444;
+}
