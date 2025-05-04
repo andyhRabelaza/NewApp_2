@@ -23,7 +23,6 @@ public class FactureService {
         this.restTemplate = restTemplate;
     }
 
-    // Méthode pour récupérer toutes les factures d'achat
     public List<PurchaseInvoice> getAllPurchaseInvoices(HttpSession session) {
         String sid = (String) session.getAttribute("sid");
 
@@ -31,7 +30,6 @@ public class FactureService {
             throw new RuntimeException("Aucune session active. Veuillez vous reconnecter.");
         }
 
-        // URL pour récupérer toutes les factures d'achat
         String url = erpnextApiUrl
                 + "/api/resource/Purchase Invoice?fields=[\"*\"]&sid=" + sid;
 
@@ -41,7 +39,6 @@ public class FactureService {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         try {
-            // Requête GET pour récupérer les factures d'achat
             ResponseEntity<PurchaseInvoiceResponse> response = restTemplate.exchange(
                     url, HttpMethod.GET, entity, PurchaseInvoiceResponse.class);
 

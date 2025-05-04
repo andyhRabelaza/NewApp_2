@@ -34,7 +34,6 @@ public class FournisseurController {
     @GetMapping("/demande/{fournisseur}")
     @ResponseBody
     public List<SupplierQuotation> getDemandeParFournisseur(@PathVariable String fournisseur, HttpSession session) {
-        // Récupérer les demandes de devis pour le fournisseur
         return fournisseurService.getSupplierQuotations(session, fournisseur);
     }
 

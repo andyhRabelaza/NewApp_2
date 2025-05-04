@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/image/erp.png">
     <title>Erpnext de bord</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/home.css}">
@@ -188,6 +189,74 @@
             margin-bottom: 15px;
         }
 
+        .welcome-icon {
+            width: 64px; /* Ajuste la taille selon ton besoin */
+            height: 64px;
+            margin-bottom: 20px; /* Espace entre l'image et le texte */
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-modifier {
+            background-color: #556080;
+            color: white;
+        }
+
+        .btn-modifier:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-supprimer {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-supprimer:hover {
+            background-color: #a71d2a;
+        }
+
+        .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
     </style>
 </head>
 <body>
@@ -234,7 +303,7 @@
         
         <section id="dynamic-content">
             <div class="welcome-box">
-                <i class="bi bi-info-circle icon"></i>
+                <img src="/image/erp.png" alt="ERP Logo" class="welcome-icon">
                 <h2>Bienvenue dans votre espace de gestion</h2>
                 <p>
                     Cette interface vous permet de gérer efficacement toutes les fonctionnalités de votre application. 
@@ -256,10 +325,10 @@
             const submenu = document.getElementById(submenuId);
             const isVisible = submenu.style.display === 'block';
 
-            document.querySelectorAll('.submenu').forEach(sub => sub.style.display = 'none');
-            document.querySelectorAll('.has-submenu').forEach(menu => menu.classList.remove('active'));
-
-            if (!isVisible) {
+            if (isVisible) {
+                submenu.style.display = 'none';
+                element.classList.remove('active');
+            } else {
                 submenu.style.display = 'block';
                 element.classList.add('active');
             }
@@ -285,7 +354,6 @@
     const fournisseur = document.getElementById("fournisseurSelect").value;
     const tableBody = document.getElementById("demandeTableBody");
 
-    // Vider le corps du tableau
     tableBody.innerHTML = '';
 
     if (!fournisseur) {
@@ -293,20 +361,17 @@
         return;
     }
 
-    // Effectuer l'appel AJAX pour récupérer les demandes de devis pour ce fournisseur
     const url = `/demande/${fournisseur}`;
 
     try {
         const response = await fetch(url);
         const result = await response.json();
 
-        // Si aucune demande de devis n'est retournée
         if (!result || result.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="4">Aucune demande trouvée.</td></tr>';
             return;
         }
 
-        // Remplir le tableau avec les demandes de devis
         result.forEach(demande => {
             const id = demande.name || 'N/A'; // Supposons que l'ID soit dans le champ "name"
             const client = demande.supplier || 'N/A'; // Fournisseur comme client ici
@@ -318,8 +383,8 @@
                     <td>${client}</td>
                     <td>${date}</td>
                     <td>
-                        <button onclick="alert('Voir détail de la demande ${id}')">Voir</button>
-                        <button onclick="alert('Supprimer la demande ${id}')">Supprimer</button>
+                        <button class="btn btn-modifier" onclick="openModal('${id}', '${client}', '${date}', 'Exemple de description de la demande')">Modifier</button>
+                        <button class="btn btn-supprimer" onclick="alert('Supprimer la demande ${id}')">Supprimer</button>
                     </td>
                 </tr>
             `;
@@ -329,6 +394,58 @@
         tableBody.innerHTML = '<tr><td colspan="4">Erreur lors de la récupération des données.</td></tr>';
     }
 }
+
+// Fonction pour ouvrir le modal et afficher les détails de la demande
+function openModal(id, fournisseur, date, description) {
+    const modal = document.getElementById("myModal");
+    const modalId = document.getElementById("modal-id");
+    const modalFournisseur = document.getElementById("modal-fournisseur");
+    const modalDate = document.getElementById("modal-date");
+    const modalDescription = document.getElementById("modal-description");
+
+    // Remplir les champs du modal avec les données
+    modalId.textContent = id;
+    modalFournisseur.textContent = fournisseur;
+    modalDate.textContent = date;
+    modalDescription.textContent = description;
+
+    // Afficher le modal
+    modal.style.display = "block";
+
+    // Ajouter l'événement de fermeture du modal
+    document.querySelector(".close").addEventListener("click", closeModal);
+
+    // Fermer le modal si on clique à l'extérieur
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+}
+
+// Fonction pour fermer le modal
+function closeModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+}
+
+// Appeler la fonction pour charger les données à l'initialisation
+document.addEventListener("DOMContentLoaded", loadDemandeByFournisseur);
+
     </script>
+
+    <!-- Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Détails de la demande</h2>
+        <p><strong>ID :</strong> <span id="modal-id"></span></p>
+        <p><strong>Fournisseur :</strong> <span id="modal-fournisseur"></span></p>
+        <p><strong>Date de création :</strong> <span id="modal-date"></span></p>
+        <p><strong>Description :</strong> <span id="modal-description"></span></p>
+    </div>
+</div>
+
+    
 </body>
 </html>

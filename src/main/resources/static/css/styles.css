@@ -1,64 +1,165 @@
-/* Style de la table */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* Empêcher le défilement global */
+}
+
+/* Conteneur principal pour limiter la hauteur et permettre le défilement */
+#content {
+    max-height: calc(100vh - 50px); /* Définir une hauteur maximale */
+    overflow-y: auto; /* Activer le défilement vertical si le contenu dépasse */
+    padding: 20px;
+    box-sizing: border-box; /* Inclure la bordure et le padding dans la hauteur totale */
+}
+
+/* TABLEAU STYLISÉ */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre portée */
-    border-radius: 8px; /* Bordures arrondies */
-    overflow: hidden;
+    margin: 30px 0;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
 }
 
-/* Bordure et fond de la table */
+/* DÉLIMITATION */
 table, th, td {
-    border: 1px solid #ddd;
+    border: 1px solid #e4e7eb;
 }
 
-th, td {
-    padding: 12px 15px; /* Espacement plus grand */
-    text-align: left;
-    font-size: 16px; /* Taille de police améliorée */
-}
-
-/* Style des en-têtes */
+/* EN-TÊTES DE COLONNE */
 th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Centrer le texte des cellules */
-td {
+    background-color: #f1f3f5;
+    color: #212529;
+    font-weight: 600;
+    padding: 16px 22px;
     text-align: center;
-    font-size: 14px; /* Taille de police plus petite pour le contenu */
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.6px;
 }
 
-/* Ajouter un survol aux lignes de la table */
+/* CELLULES DU TABLEAU */
+td {
+    padding: 14px 22px;
+    font-size: 15px;
+    color: #495057;
+    text-align: center;
+}
+
+/* HOVER LIGNE */
 tr:hover {
-    background-color: #f9f9f9;
+    background-color: #f8f9fa;
 }
 
-/* Couleurs des statuts */
+/* STATUTS COLORÉS */
 .payé {
-    color: green;
+    color: #2ecc71;
     font-weight: bold;
 }
 
 .en-attente {
-    color: orange;
+    color: #f39c12;
     font-weight: bold;
 }
 
-/* Ajouter une bordure arrondie et un ombrage léger lors du survol de la table */
-table tbody tr:hover {
-    background-color: #f1f1f1;
+.annulé {
+    color: #e74c3c;
+    font-weight: bold;
 }
 
-/* Ajouter des couleurs et des ombrages de survol pour les cellules */
-td, th {
-    transition: all 0.3s ease;
+/* TRANSITIONS FLUIDES */
+th, td {
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 td:hover, th:hover {
-    background-color: #f1f1f1;
+    background-color: #e9f1ff;
+    cursor: default;
+}
+
+/* RESPONSIVE TABLE */
+@media (max-width: 768px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    th, td {
+        padding: 12px 18px;
+        font-size: 14px;
+    }
+}
+
+/* FORMULAIRE STYLISÉ */
+form {
+    margin: 30px 0;
+    padding: 25px;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+}
+
+/* LABEL DU FORMULAIRE */
+form label {
+    font-weight: 600;
+    font-size: 15px;
+    color: #343a40;
+}
+
+form select {
+    padding: 10px 14px;
+    font-size: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #333;
+    transition: all 0.3s ease;
+    min-width: 230px;
+}
+
+form select:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.2);
+}
+
+form button {
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #556080;
+    border: none;
+    border-radius: 6px;
     cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form button:hover {
+    background-color: #0b5ed7;
+    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.4);
+}
+
+form button:active {
+    background-color: #084298;
+}
+
+/* RESPONSIVE FORMULAIRE */
+@media (max-width: 600px) {
+    form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    form select,
+    form button {
+        width: 100%;
+    }
 }
