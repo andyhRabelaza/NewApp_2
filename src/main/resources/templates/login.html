@@ -2,18 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${title}">Login</title>
+    <title>Connexion ERPNext</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="login-container">
-    <h2>Connexion</h2>
-    <form th:action="@{/login}" method="post">
-        <label for="username">Email :</label>
-        <input type="text" id="username" name="username" required>
+    <img src="/image/erp.png" alt="Logo ERP" style="max-width: 120px; display: block; margin: 0 auto;">
 
-        <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="password" required>
+    <form th:action="@{/login}" method="post">
+        <label for="usr">Email :</label>
+        <input type="text" id="usr" name="usr" required>
+
+        <label for="pwd">Mot de passe :</label>
+        <input type="password" id="pwd" name="pwd" required>
 
         <div th:if="${error}" style="color: red; margin-top: 10px;" th:text="${error}"></div>
 

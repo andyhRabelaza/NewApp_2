@@ -1,0 +1,74 @@
+<div th:fragment="content">
+    <h3>Liste des demandes de devis</h3>
+
+    <!-- Formulaire avec liste déroulante de fournisseurs -->
+    <form>
+        <label for="fournisseurSelect">Sélectionnez un fournisseur :</label>
+        <select id="fournisseurSelect" onchange="loadDemandeByFournisseur()">
+            <option value="">Choisissez un fournisseur</option>
+            <option value="fournisseur1">Fournisseur 1</option>
+            <option value="fournisseur2">Fournisseur 2</option>
+            <option value="fournisseur3">Fournisseur 3</option>
+        </select>
+    </form>
+
+    <!-- Contenu dynamique des demandes de devis -->
+    <div id="demandeTable">
+        <table id="demandeTableContent" border="1" cellpadding="8" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Client</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="demandeTableBody">
+                <!-- Contenu généré dynamiquement -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function loadDemandeByFournisseur() {
+        const fournisseur = document.getElementById("fournisseurSelect").value;
+        const tableBody = document.getElementById("demandeTableBody");
+
+        // Données statiques pour test
+        const staticData = {
+            "fournisseur1": [
+                { id: 101, client: "Société Alpha", date: "2024-07-12" },
+                { id: 102, client: "Société Beta", date: "2024-07-14" }
+            ],
+            "fournisseur2": [
+                { id: 201, client: "Entreprise Gamma", date: "2024-07-15" }
+            ],
+            "fournisseur3": [
+                { id: 301, client: "Client Zeta", date: "2024-07-18" }
+            ]
+        };
+
+        tableBody.innerHTML = ''; // Réinitialiser
+
+        if (!fournisseur || !staticData[fournisseur]) {
+            tableBody.innerHTML = '<tr><td colspan="4">Aucune demande trouvée.</td></tr>';
+            return;
+        }
+
+        // Remplir avec les données
+        staticData[fournisseur].forEach(demande => {
+            tableBody.innerHTML += `
+                <tr>
+                    <td>${demande.id}</td>
+                    <td>${demande.client}</td>
+                    <td>${demande.date}</td>
+                    <td>
+                        <button onclick="alert('Voir détail de la demande ${demande.id}')">Voir</button>
+                        <button onclick="alert('Supprimer la demande ${demande.id}')">Supprimer</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+</script>
