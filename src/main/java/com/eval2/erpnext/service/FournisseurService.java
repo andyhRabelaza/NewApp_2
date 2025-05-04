@@ -51,30 +51,24 @@ public class FournisseurService {
     }
 
     public List<SupplierQuotation> getSupplierQuotations(HttpSession session, String parametre1) {
-        // Récupérer le SID de la session
         String sid = (String) session.getAttribute("sid");
 
         if (sid == null) {
             throw new RuntimeException("Aucune session active. Veuillez vous reconnecter.");
         }
 
-        // URL de l'API ERPNext pour les quotations de fournisseurs
         String url = erpnextApiUrl + "/api/resource/Supplier Quotation?fields=[\"*\"]&filters=[[\"supplier\",\"=\",\""
                 + parametre1 + "\"]]&sid=" + sid;
 
-        // Création des en-têtes HTTP
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, "sid=" + sid);
 
-        // Préparer l'entité avec les en-têtes
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         try {
-            // Faire l'appel à l'API et récupérer la réponse
             ResponseEntity<SupplierQuotationResponse> response = restTemplate.exchange(
                     url, HttpMethod.GET, entity, SupplierQuotationResponse.class);
 
-            // Retourner les données extraites de la réponse
             return response.getBody().getData();
         } catch (Exception e) {
             e.printStackTrace();

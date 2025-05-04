@@ -21,7 +21,6 @@ public class AuthService {
         this.restTemplate = restTemplate;
     }
 
-    // Retourne le SID si OK, sinon null
     public String authenticate(String usr, String pwd) {
         String url = erpnextApiUrl + "/api/method/login";
 
@@ -51,6 +50,6 @@ public class AuthService {
             e.printStackTrace();
         }
 
-        return null; // Authentification échouée ou pas de SID
+        return null; 
     }
 }
