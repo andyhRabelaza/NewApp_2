@@ -1,18 +1,22 @@
-<!-- fragments/listecommande.html -->
-<div th:fragment="content">
-    <h3>Liste des commandes</h3>
-    <table>
-        <tr>
-            <th>ID Commande</th>
-            <th>Client</th>
-            <th>Date</th>
-            <th>Status</th>
-        </tr>
-        <tr>
-            <td>001</td>
-            <td>Jean Dupont</td>
-            <td>2024-09-01</td>
-            <td>Livrée</td>
-        </tr>
+<div id="content" th:fragment="content">
+    <h2>Liste des Commandes d'Achat</h2>
+
+    <table border="1" cellspacing="0" cellpadding="8">
+        <thead>
+            <tr>
+                <th>Nom de la commande</th>
+                <th>Fournisseur</th>
+                <th>Date de commande</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="commande : ${commandes}">
+                <td th:text="${commande.name}">Nom</td>
+                <td th:text="${commande.supplier}">Fournisseur</td>
+                <td th:text="${commande.transaction_date}">Date</td>
+                <td th:text="${commande.status}">Status</td>
+            </tr>
+        </tbody>
     </table>
 </div>

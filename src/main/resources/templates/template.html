@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Erpnext de bord</title>
-    <!-- Bootstrap Icons CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/home.css}">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
@@ -19,7 +18,7 @@
 
         .sidebar {
             width: 250px;
-            background-color: #222;
+            background-color: #556080;
             color: white;
             padding: 20px;
             height: 100vh;
@@ -142,6 +141,53 @@
         .logout-button:hover {
            color : #d31904;
         }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .username {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .welcome-box {
+            text-align: center;
+            background: #ffffff;
+            border: 1px solid #e0e6ed;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+            max-width: 700px;
+            width: 100%;
+            margin: 40px auto;
+        }
+
+        .welcome-box .icon {
+            font-size: 50px;
+            color: #0d6efd;
+            margin-bottom: 20px;
+        }
+
+        .welcome-box h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        .welcome-box p {
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
     </style>
 </head>
 <body>
@@ -152,7 +198,6 @@
         </div>
 
         <ul>
-            <!-- Menu Fournisseur -->
             <li class="menu-item">
                 <div class="has-submenu" onclick="toggleSubmenu(this, 'fournisseurSubmenu')">
                     Fournisseur
@@ -164,7 +209,6 @@
                 </ul>
             </li>
 
-            <!-- Menu Comptable -->
             <li class="menu-item">
                 <div class="has-submenu" onclick="toggleSubmenu(this, 'comptableSubmenu')">
                     Comptable
@@ -179,15 +223,33 @@
 
     <main class="main-content">
         <header class="header-bar">
-            <h1 th:text="'Bienvenue ' + ${user}">Bienvenue</h1>
+            <div class="user-info">
+                <img src="/image/logo.png" alt="Logo" class="logo">
+                <span class="username" th:text="${user}">Nom de l'utilisateur</span>
+            </div>
             <a th:href="@{/logout}" class="logout-button">
                 <i class="bi bi-box-arrow-right"></i> Déconnexion
             </a>
-        </header>        
+        </header>
+        
         <section id="dynamic-content">
-            <p>Veuillez sélectionner une option dans le menu à gauche pour continuer.</p>
-        </section>
-    </main>
+            <div class="welcome-box">
+                <i class="bi bi-info-circle icon"></i>
+                <h2>Bienvenue dans votre espace de gestion</h2>
+                <p>
+                    Cette interface vous permet de gérer efficacement toutes les fonctionnalités de votre application. 
+                    Utilisez le menu à gauche pour naviguer entre les différentes sections disponibles.
+                </p>
+                <p>
+                    Vous pouvez consulter les informations importantes, suivre l'activité en temps réel, 
+                    et accéder à des outils personnalisés selon vos besoins.
+                </p>
+                <p>
+                    Sélectionnez une option pour commencer. Nous vous souhaitons une excellente utilisation !
+                </p>
+            </div>
+        </section>        
+    </main>    
 
     <script>
         function toggleSubmenu(element, submenuId) {
@@ -218,6 +280,55 @@
                     document.getElementById('dynamic-content').innerHTML = '<p>Erreur : ' + error.message + '</p>';
                 });
         }
+
+        async function loadDemandeByFournisseur() {
+    const fournisseur = document.getElementById("fournisseurSelect").value;
+    const tableBody = document.getElementById("demandeTableBody");
+
+    // Vider le corps du tableau
+    tableBody.innerHTML = '';
+
+    if (!fournisseur) {
+        tableBody.innerHTML = '<tr><td colspan="4">Veuillez sélectionner un fournisseur.</td></tr>';
+        return;
+    }
+
+    // Effectuer l'appel AJAX pour récupérer les demandes de devis pour ce fournisseur
+    const url = `/demande/${fournisseur}`;
+
+    try {
+        const response = await fetch(url);
+        const result = await response.json();
+
+        // Si aucune demande de devis n'est retournée
+        if (!result || result.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="4">Aucune demande trouvée.</td></tr>';
+            return;
+        }
+
+        // Remplir le tableau avec les demandes de devis
+        result.forEach(demande => {
+            const id = demande.name || 'N/A'; // Supposons que l'ID soit dans le champ "name"
+            const client = demande.supplier || 'N/A'; // Fournisseur comme client ici
+            const date = demande.creation ? demande.creation.split(" ")[0] : 'N/A'; // Date de création
+
+            tableBody.innerHTML += `
+                <tr>
+                    <td>${id}</td>
+                    <td>${client}</td>
+                    <td>${date}</td>
+                    <td>
+                        <button onclick="alert('Voir détail de la demande ${id}')">Voir</button>
+                        <button onclick="alert('Supprimer la demande ${id}')">Supprimer</button>
+                    </td>
+                </tr>
+            `;
+        });
+    } catch (error) {
+        console.error("Erreur lors du chargement des demandes de devis :", error);
+        tableBody.innerHTML = '<tr><td colspan="4">Erreur lors de la récupération des données.</td></tr>';
+    }
+}
     </script>
 </body>
 </html>
