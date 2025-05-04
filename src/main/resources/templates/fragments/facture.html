@@ -1,0 +1,41 @@
+<!-- fragments/facture.html -->
+<div th:fragment="content">
+    <h2>Liste des factures</h2>
+
+    <table border="1" cellpadding="10" cellspacing="0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Date</th>
+                <th>Montant</th>
+                <th>Statut</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>F001</td>
+                <td>Jean Dupont</td>
+                <td>2024-09-01</td>
+                <td>150.00 €</td>
+                <td style="color: green;">Payé</td>
+            </tr>
+            <tr>
+                <td>F002</td>
+                <td>Claire Martin</td>
+                <td>2024-09-03</td>
+                <td>230.00 €</td>
+                <td style="color: orange;">En attente</td>
+            </tr>
+            <tr>
+                <td>F003</td>
+                <td>Luc Morel</td>
+                <td>2024-09-05</td>
+                <td>99.99 €</td>
+                <td style="color: green;">Payé</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/css/styles.css">

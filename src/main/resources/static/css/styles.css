@@ -1,0 +1,64 @@
+/* Style de la table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre portée */
+    border-radius: 8px; /* Bordures arrondies */
+    overflow: hidden;
+}
+
+/* Bordure et fond de la table */
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 12px 15px; /* Espacement plus grand */
+    text-align: left;
+    font-size: 16px; /* Taille de police améliorée */
+}
+
+/* Style des en-têtes */
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Centrer le texte des cellules */
+td {
+    text-align: center;
+    font-size: 14px; /* Taille de police plus petite pour le contenu */
+}
+
+/* Ajouter un survol aux lignes de la table */
+tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Couleurs des statuts */
+.payé {
+    color: green;
+    font-weight: bold;
+}
+
+.en-attente {
+    color: orange;
+    font-weight: bold;
+}
+
+/* Ajouter une bordure arrondie et un ombrage léger lors du survol de la table */
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Ajouter des couleurs et des ombrages de survol pour les cellules */
+td, th {
+    transition: all 0.3s ease;
+}
+
+td:hover, th:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
