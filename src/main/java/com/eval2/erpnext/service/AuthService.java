@@ -7,6 +7,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 public class AuthService {
 
@@ -19,7 +21,8 @@ public class AuthService {
         this.restTemplate = restTemplate;
     }
 
-    public boolean authenticate(String usr, String pwd) {
+    // Retourne le SID si OK, sinon null
+    public String authenticate(String usr, String pwd) {
         String url = erpnextApiUrl + "/api/method/login";
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
@@ -32,10 +35,22 @@ public class AuthService {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
 
         try {
-            ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
-            return response.getStatusCode().is2xxSuccessful();
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                List<String> cookies = response.getHeaders().get("Set-Cookie");
+                if (cookies != null) {
+                    for (String cookie : cookies) {
+                        if (cookie.startsWith("sid=")) {
+                            return cookie.split(";")[0].split("=")[1]; // extraire le sid
+                        }
+                    }
+                }
+            }
         } catch (Exception e) {
-            return false;
+            e.printStackTrace();
         }
+
+        return null; // Authentification échouée ou pas de SID
     }
 }
