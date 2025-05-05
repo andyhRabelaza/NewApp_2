@@ -3,6 +3,7 @@ package com.eval2.erpnext.controller;
 import com.eval2.erpnext.model.Commande;
 import com.eval2.erpnext.model.Fournisseur;
 import com.eval2.erpnext.model.SupplierQuotation;
+import com.eval2.erpnext.model.SupplierQuotationUpdateRequest;
 import com.eval2.erpnext.service.FournisseurService;
 import com.eval2.erpnext.service.CommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
@@ -43,4 +46,27 @@ public class FournisseurController {
         model.addAttribute("commandes", commandes);
         return "fragments/listecommande :: content";
     }
+
+    @GetMapping("/demande/detail/{quotationId}")
+    @ResponseBody
+    public SupplierQuotation getDetailDemande(@PathVariable String quotationId, HttpSession session) {
+        return fournisseurService.getSupplierQuotationById(session, quotationId);
+    }
+
+    @PutMapping("/demande/details/{quotationId}")
+    @ResponseBody
+    public SupplierQuotation updateDemande(@PathVariable String quotationId, HttpSession session,
+            @RequestBody SupplierQuotationUpdateRequest updatedItems) {
+        // Log du côté serveur pour afficher les données reçues
+        System.out.println("Mise à jour de la demande avec ID : " + quotationId);
+        System.out.println("Détails reçus : " + updatedItems.toString());
+
+        // Traitement de la mise à jour de la demande
+        SupplierQuotation updatedQuotation = fournisseurService.updateSupplierQuotation(quotationId, session,
+                updatedItems);
+
+        // Retourne l'objet mis à jour
+        return updatedQuotation;
+    }
+
 }

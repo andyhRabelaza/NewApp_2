@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendrier</title>
+    
+    <!-- FullCalendar CSS via cdnjs -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.9/main.min.css" rel="stylesheet" />
+</head>
+<body>
+    <h2>Calendrier</h2>
+    <div id="calendar"></div> <!-- Ce div contiendra le calendrier -->
+
+    <!-- FullCalendar JS via cdnjs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.9/main.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth', // Affichage de la vue mois
+                locale: 'fr', // Langue en français
+                headerToolbar: {
+                    left: 'prev,next today',  // Boutons précédent, suivant et aujourd'hui
+                    center: 'title',  // Titre du mois
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'  // Vue mois, semaine et jour
+                }
+            });
+            calendar.render(); // Affichage du calendrier
+        });
+    </script>
+</body>
+</html>
