@@ -1,11 +1,14 @@
 package com.eval2.erpnext.model;
 
-public class SupplierQuotation {
-    private String name; // Le nom de la demande de devis
-    private String supplier; // Le fournisseur associé
-    private String creation; // La date de création de la demande
+import java.util.List;
 
-    // Getter et Setter
+public class SupplierQuotation {
+    private String name;
+    private String supplier;
+    private String creation;
+    private List<SupplierQuotationItem> items;
+
+    // Getters & Setters
     public String getName() {
         return name;
     }
@@ -28,5 +31,13 @@ public class SupplierQuotation {
 
     public void setCreation(String creation) {
         this.creation = creation;
+    }
+
+    public List<SupplierQuotationItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<SupplierQuotationItem> items) {
+        this.items = items;
     }
 }

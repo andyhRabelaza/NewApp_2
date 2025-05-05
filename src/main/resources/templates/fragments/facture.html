@@ -9,16 +9,23 @@
                 <th>Fournisseur</th>
                 <th>Montant total</th>
                 <th>Statut</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="facture : ${factures}">
                 <td th:text="${facture.name}">F001</td>
                 <td th:text="${facture.supplier}">Nom Fournisseur</td>
-                <td th:text="${#numbers.formatDecimal(facture.total, 1, 'POINT', 2, 'COMMA')} + ' €'">1,000.00 €</td>
+                <td th:text="${#numbers.formatDecimal(facture.total, 1, 'POINT', 2, 'POINT')} + ' €'">1,000.00 €</td>
                 <td th:text="${facture.status}"
                     th:style="'color:' + (facture.status == 'Paid' ? 'green' : (facture.status == 'Unpaid' ? 'red' : 'orange'))">
                     En attente
+                </td>
+                <td>
+                    <!-- Pour les factures en statut 'Unpaid' ou 'Partial Paid' -->
+                    <button class="payment-button" th:if="${facture.status == 'Unpaid' || facture.status == 'Partly Paid'}">
+                        Paiement
+                    </button>
                 </td>
             </tr>
         </tbody>

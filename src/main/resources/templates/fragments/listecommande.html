@@ -15,7 +15,10 @@
                 <td th:text="${commande.name}">Nom</td>
                 <td th:text="${commande.supplier}">Fournisseur</td>
                 <td th:text="${commande.transaction_date}">Date</td>
-                <td th:text="${commande.status}">Status</td>
+                <td th:text="${commande.status}"
+                    th:style="'color:' + (commande.status == 'Paid' ? 'green' : (commande.status == 'Unpaid' ? 'red' : 'orange'))">
+                    En attente
+                </td>
             </tr>
         </tbody>
     </table>
