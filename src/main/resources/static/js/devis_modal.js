@@ -9,7 +9,6 @@ function openModal(quotationId) {
         .then(data => {
             console.log("Données reçues de l'API:", data);
 
-            // Vérification de l'existence des éléments dans le DOM
             const modal = document.getElementById("myModal");
             const modalId = document.getElementById("modal-id");
             const modalFournisseur = document.getElementById("modal-fournisseur");
@@ -33,7 +32,6 @@ function openModal(quotationId) {
             } else {
                 console.error("L'élément avec l'ID 'modal-docstatus' n'a pas été trouvé.");
             }
-            // Gestion du statut
             if (modalDocstatus) {
                 if (data.docstatus === 1) {
                     modalDocstatus.textContent = "Submitted";  // Si docstatus est 1
@@ -60,7 +58,6 @@ function openModal(quotationId) {
             }   
                                 
 
-            // Nettoyer et remplir la liste des items
             const itemsContainer = document.getElementById("modal-items");
             itemsContainer.innerHTML = ""; // Vider l'ancien contenu
 
@@ -83,20 +80,17 @@ function openModal(quotationId) {
                 itemsContainer.innerHTML = `<tr><td colspan="3">Aucun item</td></tr>`;
             }
 
-            // Afficher le modal
             if (modal) {
                 modal.style.display = "block";
             } else {
                 console.error("Le modal n'a pas été trouvé.");
             }
 
-            // Gestion du bouton de fermeture
             const closeBtn = document.querySelector(".close");
             if (closeBtn) {
                 closeBtn.onclick = closeModal;
             }
 
-            // Fermeture du modal en cliquant à l'extérieur
             window.onclick = function (event) {
                 if (event.target == modal) {
                     closeModal();

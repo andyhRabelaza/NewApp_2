@@ -21,10 +21,11 @@
                 <td th:text="${facture.outstandingAmount}">0.00 €</td>
                 <td>
                     <span th:text="${facture.status}"
-                          th:classappend=" 
-                            ${facture.status == 'Paid'} ? 'status-badge paid' : 
-                            (${facture.status == 'Unpaid'} ? 'status-badge unpaid' : 
-                            'status-badge default')">
+                        th:classappend="
+                            ${facture.status == 'Paid'} ? 'status-badge paid' :
+                            (${facture.status == 'Unpaid'} ? 'status-badge unpaid' :
+                            (${facture.status == 'Partly Paid'} ? 'status-badge partly-paid' :
+                            'status-badge default'))">
                     </span>
                 </td>
                 
