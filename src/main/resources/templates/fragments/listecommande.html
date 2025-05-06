@@ -1,5 +1,5 @@
 <div id="content" th:fragment="content">
-    <h2>Liste des Commandes d'Achat</h2>
+    <h2>Liste des Commandes</h2>
 
     <table border="1" cellspacing="0" cellpadding="8">
         <thead>
@@ -15,10 +15,15 @@
                 <td th:text="${commande.name}">Nom</td>
                 <td th:text="${commande.supplier}">Fournisseur</td>
                 <td th:text="${commande.transaction_date}">Date</td>
-                <td th:text="${commande.status}"
-                    th:style="'color:' + (commande.status == 'Paid' ? 'green' : (commande.status == 'Unpaid' ? 'red' : 'orange'))">
-                    En attente
-                </td>
+                <td>
+                    <span th:text="${commande.status}"
+                          th:classappend=" 
+                            ${commande.status == 'Submitted'} ? 'status-badge submitted' :
+                            (${commande.status == 'Draft'} ? 'status-badge draft' :
+                            (${commande.status == 'To Receive and Bill'} ? 'status-badge receive-bill' :
+                            'status-badge default'))">
+                    </span>
+                </td>                
             </tr>
         </tbody>
     </table>

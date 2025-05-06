@@ -6,6 +6,7 @@ public class SupplierQuotation {
     private String name;
     private String supplier;
     private String creation;
+    private Integer docstatus;
     private List<SupplierQuotationItem> items;
 
     // Getters & Setters
@@ -39,5 +40,13 @@ public class SupplierQuotation {
 
     public void setItems(List<SupplierQuotationItem> items) {
         this.items = items;
+    }
+
+    public Integer getDocstatus() {
+        return docstatus;
+    }
+
+    public void setDocstatus(Integer docstatus) {
+        this.docstatus = docstatus;
     }
 }
