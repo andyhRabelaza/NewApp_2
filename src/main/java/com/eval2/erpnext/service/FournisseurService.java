@@ -130,4 +130,31 @@ public class FournisseurService {
         }
     }
 
+    // public void submitSupplierQuotation(String quotationId, HttpSession session)
+    // {
+    // String sid = (String) session.getAttribute("sid");
+
+    // if (sid == null) {
+    // throw new RuntimeException("Aucune session active. Veuillez vous
+    // reconnecter.");
+    // }
+
+    // String submitUrl = erpnextApiUrl + "/api/resource/Supplier Quotation/" +
+    // quotationId + "/submit";
+
+    // HttpHeaders headers = new HttpHeaders();
+    // headers.add(HttpHeaders.COOKIE, "sid=" + sid);
+    // headers.setContentType(MediaType.APPLICATION_JSON);
+
+    // HttpEntity<Void> request = new HttpEntity<>(headers);
+
+    // try {
+    // restTemplate.postForEntity(submitUrl, request, String.class);
+    // System.out.println("Supplier Quotation soumise avec succès.");
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // throw new RuntimeException("Erreur lors de la soumission de la quotation.");
+    // }
+    // }
+
 }

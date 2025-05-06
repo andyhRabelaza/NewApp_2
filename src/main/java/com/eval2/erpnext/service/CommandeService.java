@@ -30,23 +30,18 @@ public class CommandeService {
             throw new RuntimeException("Aucune session active. Veuillez vous reconnecter.");
         }
 
-        // URL avec le paramètre 'fields' ajouté
         String url = erpnextApiUrl
                 + "/api/resource/Purchase Order?fields=[\"*\"]";
 
-        // Ajout du SID dans les headers
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.COOKIE, "sid=" + sid);
 
-        // Création de l'entité HTTP avec les headers
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         try {
-            // Requête GET avec RestTemplate
             ResponseEntity<CommandeResponse> response = restTemplate.exchange(
                     url, HttpMethod.GET, entity, CommandeResponse.class);
 
-            // Retourner les commandes depuis la réponse
             return response.getBody().getData();
         } catch (Exception e) {
             e.printStackTrace();

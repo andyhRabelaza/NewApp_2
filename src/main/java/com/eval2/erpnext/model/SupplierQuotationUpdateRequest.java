@@ -4,6 +4,7 @@ import java.util.List;
 
 public class SupplierQuotationUpdateRequest {
     private List<ItemUpdate> items;
+    private int docstatus;
 
     public List<ItemUpdate> getItems() {
         return items;
@@ -11,6 +12,14 @@ public class SupplierQuotationUpdateRequest {
 
     public void setItems(List<ItemUpdate> items) {
         this.items = items;
+    }
+
+    public int getDocstatus() {
+        return docstatus;
+    }
+
+    public void setDocstatus(int docstatus) {
+        this.docstatus = docstatus;
     }
 
     public static class ItemUpdate {
@@ -51,12 +60,11 @@ public class SupplierQuotationUpdateRequest {
             this.item_code = item_code;
         }
 
-        // Surcharge de la méthode toString() pour afficher l'objet ItemUpdate
         @Override
         public String toString() {
             return "ItemUpdate{" +
                     "item_name='" + item_name + '\'' +
-                    "item_code='" + item_code + '\'' +
+                    ", item_code='" + item_code + '\'' +
                     ", qty=" + qty +
                     ", rate=" + rate +
                     '}';
@@ -66,14 +74,13 @@ public class SupplierQuotationUpdateRequest {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("SupplierQuotationUpdateRequest{items=[");
+        sb.append("SupplierQuotationUpdateRequest{docstatus=").append(docstatus).append(", items=[");
 
-        // Vérifie si la liste des items n'est pas vide avant de l'afficher
         if (items != null && !items.isEmpty()) {
             for (ItemUpdate item : items) {
                 sb.append(item.toString()).append(", ");
             }
-            sb.setLength(sb.length() - 2); // Enlever la dernière virgule et espace
+            sb.setLength(sb.length() - 2); // Supprime la dernière virgule
         }
         sb.append("]}");
         return sb.toString();

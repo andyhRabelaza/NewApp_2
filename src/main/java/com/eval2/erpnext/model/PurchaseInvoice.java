@@ -1,10 +1,16 @@
 package com.eval2.erpnext.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PurchaseInvoice {
 
     private String name;
     private String supplier;
     private double total;
+
+    // @JsonProperty("outstanding_amount")
+    private double outstandingAmount;
+
     private String status;
 
     // Getters et Setters
@@ -39,4 +45,13 @@ public class PurchaseInvoice {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public double getOutstandingAmount() {
+        return outstandingAmount;
+    }
+
+    public void setOutstandingAmount(double outstandingAmount) {
+        this.outstandingAmount = outstandingAmount;
+    }
+
 }

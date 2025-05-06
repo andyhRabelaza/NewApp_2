@@ -7,10 +7,13 @@ import com.eval2.erpnext.model.SupplierQuotationUpdateRequest;
 import com.eval2.erpnext.service.FournisseurService;
 import com.eval2.erpnext.service.CommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -68,5 +71,19 @@ public class FournisseurController {
         // Retourne l'objet mis à jour
         return updatedQuotation;
     }
+
+    // @PostMapping("/demande/submit/{quotationId}")
+    // @ResponseBody
+    // public ResponseEntity<String> submitDemande(@PathVariable String quotationId,
+    // HttpSession session) {
+    // try {
+    // fournisseurService.submitSupplierQuotation(quotationId, session);
+    // return ResponseEntity.ok("Demande soumise avec succès.");
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erreur
+    // lors de la soumission.");
+    // }
+    // }
 
 }

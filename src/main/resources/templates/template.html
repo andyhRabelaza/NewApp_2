@@ -344,6 +344,67 @@
             background-color: #0056b3; /* Vert plus foncé */
         }
 
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: bold;
+            display: inline-block;
+            border: 1px solid transparent;
+        }
+
+        .status-badge.paid {
+            color: green;
+            background-color: #e6ffed;
+            border-color: green;
+        }
+
+        .status-badge.unpaid {
+            color: red;
+            background-color: #ffe6e6;
+            border-color: red;
+        }
+
+        .status-badge.default {
+            color: orange;
+            background-color: #fff4e6;
+            border-color: orange;
+        }
+
+        .status-badge.submitted {
+            color: green;
+            background-color: #e6ffed;
+            border-color: green;
+        }
+
+        .status-badge.draft {
+            color: red;
+            background-color: #ffe6e6;
+            border-color: red;
+        }
+
+        .status-badge.receive-bill {
+            color: orange;
+            background-color: #fff4e6;
+            border-color: orange;
+        }
+
+        .status-badge.default {
+            color: gray;
+            background-color: #f0f0f0;
+            border-color: gray;
+        }
+
+        .status-draft {
+            color: red;
+            font-weight: bold;
+        }
+
+        .status-submitted {
+            color: green;
+            font-weight: bold;
+        }
+
     </style>
 </head>
 <body>
@@ -491,91 +552,173 @@
             }
         }
 
-        function openModal(quotationId) {
-            fetch(`/demande/detail/${quotationId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Erreur lors de la récupération de la demande");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Données reçues de l'API:", data);
+        // function openModal(quotationId) {
+        //     fetch(`/demande/detail/${quotationId}`)
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error("Erreur lors de la récupération de la demande");
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             console.log("Données reçues de l'API:", data);
 
-                    // Vérification de l'existence des éléments dans le DOM
-                    const modal = document.getElementById("myModal");
-                    const modalId = document.getElementById("modal-id");
-                    const modalFournisseur = document.getElementById("modal-fournisseur");
+        //             // Vérification de l'existence des éléments dans le DOM
+        //             const modal = document.getElementById("myModal");
+        //             const modalId = document.getElementById("modal-id");
+        //             const modalFournisseur = document.getElementById("modal-fournisseur");
+        //             const modalDocstatus = document.getElementById("modal-docstatus");
 
-                    if (modalId) {
-                        modalId.textContent = data.name;
-                    } else {
-                        console.error("L'élément avec l'ID 'modal-id' n'a pas été trouvé.");
-                    }
+        //             if (modalId) {
+        //                 modalId.textContent = data.name;
+        //             } else {
+        //                 console.error("L'élément avec l'ID 'modal-id' n'a pas été trouvé.");
+        //             }
 
-                    if (modalFournisseur) {
-                        modalFournisseur.textContent = data.supplier;
-                    } else {
-                        console.error("L'élément avec l'ID 'modal-fournisseur' n'a pas été trouvé.");
-                    }
+        //             if (modalFournisseur) {
+        //                 modalFournisseur.textContent = data.supplier;
+        //             } else {
+        //                 console.error("L'élément avec l'ID 'modal-fournisseur' n'a pas été trouvé.");
+        //             }
 
-                    // Nettoyer et remplir la liste des items
-                    const itemsContainer = document.getElementById("modal-items");
-                    itemsContainer.innerHTML = ""; // Vider l'ancien contenu
+        //             if (modalDocstatus) {
+        //                 modalDocstatus.textContent = data.docstatus;
+        //                 modalDocstatus.className = "";
+        //             } else {
+        //                 console.error("L'élément avec l'ID 'modal-docstatus' n'a pas été trouvé.");
+        //             }
+        //             // Gestion du statut
+        //             if (modalDocstatus) {
+        //                 if (data.docstatus === 1) {
+        //                     modalDocstatus.textContent = "Submitted";  // Si docstatus est 1
+        //                     // Masquer le bouton "Enregistrer" si le statut est "Submitted"
+        //                     modalDocstatus.classList.add("status-submitted");
+        //                     if (saveButton) {
+        //                         saveButton.style.display = "none";
+        //                     }
+        //                 } else if (data.docstatus === 0) {
+        //                     modalDocstatus.textContent = "Draft";  // Si docstatus est 0
+        //                     // Afficher le bouton "Enregistrer" si le statut est "Draft"
+        //                     modalDocstatus.classList.add("status-draft");
+        //                     if (saveButton) {
+        //                         saveButton.style.display = "inline-block";
+        //                     }
+        //                 } else {
+        //                     modalDocstatus.textContent = "Inconnu";  // Valeur par défaut si ce n'est ni 1 ni 0
+        //                     if (saveButton) {
+        //                         saveButton.style.display = "inline-block";
+        //                     }
+        //                 }
+        //             } else {
+        //                 console.error("L'élément avec l'ID 'modal-docstatus' n'a pas été trouvé.");
+        //             }   
+                                        
 
-                    if (data.items && data.items.length > 0) {
-                        data.items.forEach(item => {
-                            const itemHtml = `
-                                <tr>
-                                    <td>${item.item_name}</td>
-                                    <td>${item.item_code}</td>
-                                     <td>
-                                        <input type="number" value="${item.qty}"  class="editable-rate" />
-                                    </td>
-                                    <td>
-                                        <input type="number" value="${item.rate}"  class="editable-rate" />
-                                    </td>
-                                </tr>`;
-                            itemsContainer.innerHTML += itemHtml;
-                        });
-                    } else {
-                        itemsContainer.innerHTML = `<tr><td colspan="3">Aucun item</td></tr>`;
-                    }
+        //             // Nettoyer et remplir la liste des items
+        //             const itemsContainer = document.getElementById("modal-items");
+        //             itemsContainer.innerHTML = ""; // Vider l'ancien contenu
 
-                    // Afficher le modal
-                    if (modal) {
-                        modal.style.display = "block";
-                    } else {
-                        console.error("Le modal n'a pas été trouvé.");
-                    }
+        //             if (data.items && data.items.length > 0) {
+        //                 data.items.forEach(item => {
+        //                     const itemHtml = `
+        //                         <tr>
+        //                             <td>${item.item_name}</td>
+        //                             <td>${item.item_code}</td>
+        //                              <td>
+        //                                 <input type="number" value="${item.qty}"  class="editable-rate" />
+        //                             </td>
+        //                             <td>
+        //                                 <input type="number" value="${item.rate}"  class="editable-rate" />
+        //                             </td>
+        //                         </tr>`;
+        //                     itemsContainer.innerHTML += itemHtml;
+        //                 });
+        //             } else {
+        //                 itemsContainer.innerHTML = `<tr><td colspan="3">Aucun item</td></tr>`;
+        //             }
 
-                    // Gestion du bouton de fermeture
-                    const closeBtn = document.querySelector(".close");
-                    if (closeBtn) {
-                        closeBtn.onclick = closeModal;
-                    }
+        //             // Afficher le modal
+        //             if (modal) {
+        //                 modal.style.display = "block";
+        //             } else {
+        //                 console.error("Le modal n'a pas été trouvé.");
+        //             }
 
-                    // Fermeture du modal en cliquant à l'extérieur
-                    window.onclick = function (event) {
-                        if (event.target == modal) {
-                            closeModal();
-                        }
-                    };
-                })
-                .catch(error => {
-                    console.error("Erreur lors de l'ouverture du modal :", error);
-                    alert("Impossible de charger les détails de la demande.");
-                });
-        }
+        //             // Gestion du bouton de fermeture
+        //             const closeBtn = document.querySelector(".close");
+        //             if (closeBtn) {
+        //                 closeBtn.onclick = closeModal;
+        //             }
 
-        function closeModal() {
-            const modal = document.getElementById("myModal");
-            if (modal) {
-                modal.style.display = "none";
-            } else {
-                console.error("Le modal n'a pas été trouvé lors de la fermeture.");
-            }
-        }
+        //             // Fermeture du modal en cliquant à l'extérieur
+        //             window.onclick = function (event) {
+        //                 if (event.target == modal) {
+        //                     closeModal();
+        //                 }
+        //             };
+        //         })
+        //         .catch(error => {
+        //             console.error("Erreur lors de l'ouverture du modal :", error);
+        //             alert("Impossible de charger les détails de la demande.");
+        //         });
+        // }
+
+        // function closeModal() {
+        //     const modal = document.getElementById("myModal");
+        //     if (modal) {
+        //         modal.style.display = "none";
+        //     } else {
+        //         console.error("Le modal n'a pas été trouvé lors de la fermeture.");
+        //     }
+        // }
+
+//         function submitQuotation(quotationId) {
+//     // Trouver la ligne contenant ce bouton
+//     const row = Array.from(document.querySelectorAll("tr")).find(tr =>
+//         tr.querySelector("button.btn-submit")?.getAttribute("onclick")?.includes(quotationId)
+//     );
+
+//     if (!row) {
+//         alert("Ligne introuvable pour la quotation : " + quotationId);
+//         return;
+//     }
+
+//     // Extraire les données utiles
+//     const cells = row.querySelectorAll("td");
+//     const id = cells[0]?.textContent.trim();
+//     const client = cells[1]?.textContent.trim();
+//     const date = cells[2]?.textContent.trim();
+
+//     console.log("Données extraites :");
+//     console.log("ID:", id);
+//     console.log("Client:", client);
+//     console.log("Date:", date);
+
+//     // Faire un appel à l'API pour soumettre la demande
+//     fetch(`/demande/submit/${quotationId}`, {
+//         method: 'POST', // Utiliser POST pour la soumission
+//         headers: {
+//             'Content-Type': 'application/json',
+//             // Ajoute ici d'autres en-têtes nécessaires si besoin (ex: token d'authentification)
+//         },
+//         body: JSON.stringify({
+//             quotationId: quotationId
+//         })
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         if (data === "Demande soumise avec succès.") {
+//             alert('Demande soumise avec succès!');
+//             // Tu peux aussi ajouter ici du code pour désactiver le bouton ou modifier son texte
+//         } else {
+//             alert('Erreur lors de la soumission de la demande');
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Erreur lors de la soumission :', error);
+//         alert('Erreur lors de la soumission.');
+//     });
+// }
 
         // document.getElementById("saveButton").addEventListener("click", function () {
         //     const docname = document.getElementById("modal-id").textContent;
@@ -634,6 +777,7 @@
                 <h2>Détails de la demande</h2>
                 <p><strong>ID :</strong> <span id="modal-id"></span></p>
                 <p><strong>Fournisseur :</strong> <span id="modal-fournisseur"></span></p>
+                <p><strong>Statut :</strong> <span id="modal-docstatus"></span></p>
 
                 <h3>Produits demandés</h3>
                 <table style="width: 100%; border-collapse: collapse;">
@@ -656,55 +800,58 @@
             </div>
         </div>
 
-<script>
-    document.getElementById("saveButton").addEventListener("click", function () {
-        const docname = document.getElementById("modal-id").textContent;
-        console.log("ID de la demande:", docname); // Log de l'ID de la demande
-        const rows = document.querySelectorAll("#modal-items tr");
-        const updatedItems = [];
+        <script>
+        // document.getElementById("saveButton").addEventListener("click", function () {
+        //     const docname = document.getElementById("modal-id").textContent;
+        //     const docstatus = 1; // ou récupéré dynamiquement depuis un champ input ou autre
+        //     console.log("ID de la demande:", docname);
+        //     const rows = document.querySelectorAll("#modal-items tr");
+        //     const updatedItems = [];
 
-        rows.forEach(row => {
-            const itemCode = row.cells[1].textContent;
-            const itemName = row.cells[0].textContent;
-            const qty = parseFloat(row.cells[2].querySelector("input").value);
-            const rate = parseFloat(row.cells[3].querySelector("input").value);
+        //     rows.forEach(row => {
+        //         const itemCode = row.cells[1].textContent;
+        //         const itemName = row.cells[0].textContent;
+        //         const qty = parseFloat(row.cells[2].querySelector("input").value);
+        //         const rate = parseFloat(row.cells[3].querySelector("input").value);
 
-            updatedItems.push({
-                item_code: itemCode,
-                item_name: itemName,
-                qty: qty,
-                rate: rate
-            });
-        });
+        //         updatedItems.push({
+        //             item_code: itemCode,
+        //             item_name: itemName,
+        //             qty: qty,
+        //             rate: rate
+        //         });
+        //     });
 
-        fetch(`/demande/details/${encodeURIComponent(docname)}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                items: updatedItems
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Erreur lors de la mise à jour");
-            }
-            return response.json();
-        })
-        .then(result => {
-            console.log("Mise à jour réussie:", result);
-            document.getElementById("saveMessage").style.display = "block";
-            setTimeout(() => {
-                document.getElementById("saveMessage").style.display = "none";
-            }, 3000);
-        })
-        .catch(error => {
-            console.error("Erreur lors de l'enregistrement :", error);
-            alert("Échec de la mise à jour !");
-        });
-    });
-</script>
+        //     fetch(`/demande/details/${encodeURIComponent(docname)}`, {
+        //         method: "PUT",
+        //         headers: {
+        //             "Content-Type": "application/json"
+        //         },
+        //         body: JSON.stringify({
+        //             items: updatedItems,
+        //             docstatus: docstatus // <-- C'est ici qu'on l'ajoute
+        //         })
+        //     })
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             throw new Error("Erreur lors de la mise à jour");
+        //         }
+        //         return response.json();
+        //     })
+        //     .then(result => {
+        //         console.log("Mise à jour réussie:", result);
+        //         document.getElementById("saveMessage").style.display = "block";
+        //         setTimeout(() => {
+        //             document.getElementById("saveMessage").style.display = "none";
+        //         }, 3000);
+        //     })
+        //     .catch(error => {
+        //         console.error("Erreur lors de l'enregistrement :", error);
+        //         alert("Échec de la mise à jour !");
+        //     });
+        // });
+
+        </script>
 
     <div id="paymentModal" class="modal" style="display: none;">
         <div class="modal-content">
@@ -722,101 +869,104 @@
                 <option value="Cash - T">Cash - T</option>
             </select>
 
-            <button id="confirmPaymentBtn">Confirmer le paiement</button>
+            <button id="confirmPaymentBtn" >Confirmer le paiement</button>
         </div>
     </div>
 
     <script>
-       document.addEventListener("DOMContentLoaded", function () {
-    const paidFromSelect = document.getElementById("paidFromSelect");
-    const factureMontantInput = document.getElementById("factureMontantModal");
+    //    document.addEventListener("DOMContentLoaded", function () {
+    // const paidFromSelect = document.getElementById("paidFromSelect");
+    // const factureMontantInput = document.getElementById("factureMontantModal");
 
-    // Écouteur pour l'ouverture du modal
-    document.addEventListener("click", function (e) {
-        if (e.target && e.target.classList.contains("payment-button")) {
-            const button = e.target;
-            const row = button.closest("tr");
+    // // Écouteur pour l'ouverture du modal
+    // document.addEventListener("click", function (e) {
+    //     if (e.target && e.target.classList.contains("payment-button")) {
+    //         const button = e.target;
+    //         const row = button.closest("tr");
 
-            const id = row.querySelector("td:nth-child(1)").textContent.trim();
-            const fournisseur = row.querySelector("td:nth-child(2)").textContent.trim();
-            const montant = row.querySelector("td:nth-child(3)").textContent.trim();
+    //         const id = row.querySelector("td:nth-child(1)").textContent.trim();
+    //         const fournisseur = row.querySelector("td:nth-child(2)").textContent.trim();
+    //         const montant = row.querySelector("td:nth-child(3)").textContent.trim();
 
-            document.getElementById("factureIdModal").textContent = id;
-            document.getElementById("factureFournisseurModal").textContent = fournisseur;
-            factureMontantInput.value = montant; // Mettre à jour le champ montant avec la valeur de la facture
+    //         document.getElementById("factureIdModal").textContent = id;
+    //         document.getElementById("factureFournisseurModal").textContent = fournisseur;
+    //         factureMontantInput.value = montant; // Mettre à jour le champ montant avec la valeur de la facture
 
-            document.getElementById("paymentModal").style.display = "block";
-        }
-    });
+    //         document.getElementById("paymentModal").style.display = "block";
+    //     }
+    // });
 
-    // Fermeture du modal
-    document.querySelector("#paymentModal .close").addEventListener("click", function () {
-        document.getElementById("paymentModal").style.display = "none";
-    });
+    // // Fermeture du modal
+    // document.querySelector("#paymentModal .close").addEventListener("click", function () {
+    //     document.getElementById("paymentModal").style.display = "none";
+    // });
 
-    // Fermeture du modal si on clique en dehors
-    window.addEventListener("click", function (event) {
-        if (event.target === document.getElementById("paymentModal")) {
-            document.getElementById("paymentModal").style.display = "none";
-        }
-    });
+    // // Fermeture du modal si on clique en dehors
+    // window.addEventListener("click", function (event) {
+    //     if (event.target === document.getElementById("paymentModal")) {
+    //         document.getElementById("paymentModal").style.display = "none";
+    //     }
+    // });
 
-    // Action du bouton "Confirmer le paiement"
-    document.getElementById("confirmPaymentBtn").addEventListener("click", function () {
-        const paymentData = {
-            doctype: "Payment Entry",
-            payment_type: "Pay",
-            party_type: "Supplier",
-            party: document.getElementById("factureFournisseurModal").textContent.trim(),
-            paid_from: paidFromSelect.value,
-            paid_amount: parseFloat(factureMontantInput.value), // Utilisation de la valeur modifiée du montant
-            received_amount: parseFloat(factureMontantInput.value), // Utilisation de la valeur modifiée du montant
-            references: [
-                {
-                    reference_doctype: "Purchase Invoice",
-                    reference_name: document.getElementById("factureIdModal").textContent.trim(),
-                    allocated_amount: parseFloat(factureMontantInput.value) // Utilisation de la valeur modifiée du montant
-                }
-            ],
-            docstatus: 1
-        };
+    // // Action du bouton "Confirmer le paiement"
+    // document.getElementById("confirmPaymentBtn").addEventListener("click", function () {
+    //     const paymentData = {
+    //         doctype: "Payment Entry",
+    //         payment_type: "Pay",
+    //         party_type: "Supplier",
+    //         party: document.getElementById("factureFournisseurModal").textContent.trim(),
+    //         paid_from: paidFromSelect.value,
+    //         paid_amount: parseFloat(factureMontantInput.value), // Utilisation de la valeur modifiée du montant
+    //         received_amount: parseFloat(factureMontantInput.value), // Utilisation de la valeur modifiée du montant
+    //         references: [
+    //             {
+    //                 reference_doctype: "Purchase Invoice",
+    //                 reference_name: document.getElementById("factureIdModal").textContent.trim(),
+    //                 allocated_amount: parseFloat(factureMontantInput.value) // Utilisation de la valeur modifiée du montant
+    //             }
+    //         ],
+    //         docstatus: 1
+    //     };
 
-        console.log("Données du paiement à envoyer :", paymentData);
+    //     console.log("Données du paiement à envoyer :", paymentData);
 
-        // Appel AJAX avec fetch pour envoyer la requête POST au backend
-        fetch('/facture/paiement', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json', // Indiquer que nous envoyons des données en JSON
-            },
-            body: JSON.stringify(paymentData), // Convertir l'objet paymentData en JSON pour l'envoyer au serveur
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Réponse du serveur:", data); // Afficher la réponse entière pour debug
+    //     // Appel AJAX avec fetch pour envoyer la requête POST au backend
+    //     fetch('/facture/paiement', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json', // Indiquer que nous envoyons des données en JSON
+    //         },
+    //         body: JSON.stringify(paymentData), // Convertir l'objet paymentData en JSON pour l'envoyer au serveur
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         console.log("Réponse du serveur:", data); // Afficher la réponse entière pour debug
 
-            // Vérifiez si la réponse contient la clé 'data' et si elle a la structure attendue
-            if (data && data.data) {
-                // Affichez des informations spécifiques de la réponse
-                const paymentName = data.data.name;  // Exemple d'accès aux données spécifiques
-                alert("Le paiement a été enregistré sous le nom : " + paymentName);
-            } else {
-                alert("Erreur de réponse du serveur : " + (data.message || "Réponse invalide"));
-            }
-        })
-        .catch(error => {
-            console.error("Erreur AJAX:", error);
-            alert("Une erreur est survenue lors de l'envoi du paiement.");
-        });
+    //         // Vérifiez si la réponse contient la clé 'data' et si elle a la structure attendue
+    //         if (data && data.data) {
+    //             // Affichez des informations spécifiques de la réponse
+    //             const paymentName = data.data.name;  // Exemple d'accès aux données spécifiques
+    //             alert("Le paiement a été enregistré sous le nom : " + paymentName);
+    //         } else {
+    //             alert("Erreur de réponse du serveur : " + (data.message || "Réponse invalide"));
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error("Erreur AJAX:", error);
+    //         alert("Une erreur est survenue lors de l'envoi du paiement.");
+    //     });
 
-                // Fermer le modal après l'envoi
-                document.getElementById("paymentModal").style.display = "none";
-            });
-        });
+    //             // Fermer le modal après l'envoi
+    //             document.getElementById("paymentModal").style.display = "none";
+    //         });
+    //     });
 
     </script>
 
 
-    
+<script src="/js/devis_modal.js"></script>
+<script src="/js/saved_devis.js"></script>
+<script src="/js/paid_facture.js"></script>
+
 </body>
 </html>
