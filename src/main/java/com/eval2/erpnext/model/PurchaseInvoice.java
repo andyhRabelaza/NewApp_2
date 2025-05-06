@@ -1,6 +1,9 @@
 package com.eval2.erpnext.model;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class PurchaseInvoice {
 
@@ -8,10 +11,18 @@ public class PurchaseInvoice {
     private String supplier;
     private double total;
 
-    // @JsonProperty("outstanding_amount")
+    @JsonProperty("outstanding_amount")
     private double outstandingAmount;
 
     private String status;
+
+    @JsonProperty("creation")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
+    private LocalDateTime creation;
+
+    @JsonProperty("modified")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSSSSS")
+    private LocalDateTime modified;
 
     // Getters et Setters
     public String getName() {
@@ -54,4 +65,19 @@ public class PurchaseInvoice {
         this.outstandingAmount = outstandingAmount;
     }
 
+    public LocalDateTime getCreation() {
+        return creation;
+    }
+
+    public void setCreation(LocalDateTime creation) {
+        this.creation = creation;
+    }
+
+    public LocalDateTime getModified() {
+        return modified;
+    }
+
+    public void setModified(LocalDateTime modified) {
+        this.modified = modified;
+    }
 }

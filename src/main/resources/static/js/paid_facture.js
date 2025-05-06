@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     const paidFromSelect = document.getElementById("paidFromSelect");
     const factureMontantInput = document.getElementById("factureMontantModal");
+    const messageEl = document.getElementById('paymentResponseMessage');
 
-    // Écouteur pour l'ouverture du modal
     document.addEventListener("click", function (e) {
         if (e.target && e.target.classList.contains("payment-button")) {
             const button = e.target;
@@ -20,19 +20,16 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Fermeture du modal
     document.querySelector("#paymentModal .close").addEventListener("click", function () {
         document.getElementById("paymentModal").style.display = "none";
     });
 
-    // Fermeture du modal si on clique en dehors
     window.addEventListener("click", function (event) {
         if (event.target === document.getElementById("paymentModal")) {
             document.getElementById("paymentModal").style.display = "none";
         }
     });
 
-    // Action du bouton "Confirmer le paiement"
     document.getElementById("confirmPaymentBtn").addEventListener("click", function () {
         const paymentData = {
             doctype: "Payment Entry",
@@ -54,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("Données du paiement à envoyer :", paymentData);
 
-        // Appel AJAX avec fetch pour envoyer la requête POST au backend
         fetch('/facture/paiement', {
             method: 'POST',
             headers: {
@@ -66,21 +62,23 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             console.log("Réponse du serveur:", data); // Afficher la réponse entière pour debug
 
-            // Vérifiez si la réponse contient la clé 'data' et si elle a la structure attendue
             if (data && data.data) {
-                // Affichez des informations spécifiques de la réponse
-                const paymentName = data.data.name;  // Exemple d'accès aux données spécifiques
-                alert("Le paiement a été enregistré sous le nom : " + paymentName);
+                const paymentName = data.data.name;
+                messageEl.style.color = 'green';
+                messageEl.textContent = "Le paiement a été enregistré sous le nom : " + paymentName;
             } else {
-                alert("Erreur de réponse du serveur : " + (data.message || "Réponse invalide"));
+                messageEl.style.color = 'red';
+                messageEl.textContent = "Erreur de réponse du serveur : " + (data.message || "Réponse invalide");
             }
+
+            setTimeout(() => {
+                document.getElementById("paymentModal").style.display = "none";
+            }, 3000);
         })
         .catch(error => {
             console.error("Erreur AJAX:", error);
-            alert("Une erreur est survenue lors de l'envoi du paiement.");
+            messageEl.style.color = 'red';
+            messageEl.textContent = "Une erreur est survenue lors de l'envoi du paiement.";
         });
-
-                // Fermer le modal après l'envoi
-                document.getElementById("paymentModal").style.display = "none";
-            });
-        });
+    });
+});
